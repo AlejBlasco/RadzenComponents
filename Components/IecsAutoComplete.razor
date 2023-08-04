@@ -4,15 +4,23 @@
 <div class="form-group">
     <label for="@_id">Ciudades</label>
     <RadzenAutoComplete class="form-control"
-        @bind-Value=@Value 
-        Data=@cities 
+        Placeholder="Escriba el nombre de una ciudad"
+        Value=@_searched
+        Change="@OnChange"
+        Data=@cities
         TextProperty="Name" 
-        LoadData=@OnLoadData/>
+        FilterOperator="StringFilterOperator.Contains"
+        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+        />
+
+    <p><b>Usted esta buscando por: </b>@_searched</p>
 </div>
 
 @code
 {
     private string _id = Guid.NewGuid().ToString();
+    private string _searched = string.Empty;
+    private IEnumerable<City> _suggested = new List<City>();
 
     public string Value {get;set;} = string.Empty;
     public IEnumerable<City> cities {get; set;} = new List<City>()
@@ -27,9 +35,14 @@
             new City{ Id = Guid.NewGuid().ToString(), Name = "Melilla", Code = "8"},
         };
 
-    async Task OnLoadData(LoadDataArgs args)
+    protected override async Task OnInitializedAsync()
     {
-        cities = await Task.FromResult(cities.Where(c => c.Name.ToLower().Contains(args.Filter) || c.Code.ToLower().Contains(args.Filter)).OrderBy(c => c.Name));
+        await base.OnInitializedAsync();
+    }
+
+    void OnChange(dynamic args)
+    {
+        _searched = args;
     }
 
 
