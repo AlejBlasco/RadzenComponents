@@ -1,6 +1,8 @@
 @using Radzen
 @using Radzen.Blazor
 
+@inject HttpClient Http
+
 <div class="form-group">
     <label for="@_id">Ciudades</label>
     <RadzenAutoComplete class="form-control"

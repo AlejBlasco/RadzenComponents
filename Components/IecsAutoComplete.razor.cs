@@ -1,3 +1,5 @@
+using RadzenComponents.Services;
+
 namespace RadzenComponents.Components
 {
     public partial class IecsAutoComplete
@@ -21,6 +23,13 @@ namespace RadzenComponents.Components
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        var municipalities = await new MunicipalalityService()
+            .GetMunicipalalitiesAsync(Http);
+
+        IEnumerable<Municipalality> aux = municipalities;
+        
+        var stop = "hammer time";
     }
 
     void OnChange(dynamic args)
