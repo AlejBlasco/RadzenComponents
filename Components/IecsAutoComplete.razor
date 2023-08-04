@@ -1,15 +1,16 @@
 @using Radzen
 @using Radzen.Blazor
+@using RadzenComponents.Services
 
 @inject HttpClient Http
 
 <div class="form-group">
-    <label for="@_id">Ciudades</label>
+    <label for="@_id">Municipios</label>
     <RadzenAutoComplete class="form-control"
-        Placeholder="Escriba el nombre de una ciudad"
+        Placeholder="Escriba el nombre de un municipio"
         Value=@_searched
         Change="@OnChange"
-        Data=@Cities
+        Data=@Municipalalities
         TextProperty="Name" 
         FilterOperator="StringFilterOperator.Contains"
         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"

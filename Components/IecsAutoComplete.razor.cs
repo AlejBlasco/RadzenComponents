@@ -1,4 +1,5 @@
 using RadzenComponents.Services;
+using System.Linq;
 
 namespace RadzenComponents.Components
 {
@@ -8,6 +9,8 @@ namespace RadzenComponents.Components
         private string _searched = string.Empty;
 
     public string Value {get;set;} = string.Empty;
+    
+    public IEnumerable<Municipalality> Municipalalities {get;set;} = new List<Municipalality>();
     public IEnumerable<City> Cities {get; set;} = new List<City>()
         {
             new City{ Id = Guid.NewGuid().ToString(), Name = "Agurain/Salvatierra", Code = "3"},
@@ -24,12 +27,8 @@ namespace RadzenComponents.Components
     {
         await base.OnInitializedAsync();
 
-        var municipalities = await new MunicipalalityService()
+        Municipalalities = await new MunicipalalityService()
             .GetMunicipalalitiesAsync(Http);
-
-        IEnumerable<Municipalality> aux = municipalities;
-        
-        var stop = "hammer time";
     }
 
     void OnChange(dynamic args)
