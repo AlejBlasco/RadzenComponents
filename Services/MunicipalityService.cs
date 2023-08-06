@@ -11,7 +11,7 @@ namespace RadzenComponents.Services
     {
         public async Task<Municipalality[]> GetMunicipalalitiesAsync(HttpClient http)
         {
-            var response = await http.GetFromJsonAsync<Municipalality[]>("sample-data/georef-spain-municipioy.json");
+            var response = await http.GetFromJsonAsync<Municipalality[]>("sample-data/georef-spain-municipio_2.json");
             
             return response != null
                 ? response.OrderBy(m => m.Name).ToArray()

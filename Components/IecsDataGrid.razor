@@ -1,0 +1,37 @@
+@using Radzen;
+@using Radzen.Blazor
+@using RadzenComponents.Services
+
+
+@inject HttpClient Http
+
+<div class="form-group">
+    <label>Datagrid de Municipios</label>
+    <RadzenDataGrid AllowFiltering="true" 
+                    AllowColumnResize="true" 
+                    AllowAlternatingRows="false" 
+                    FilterMode="FilterMode.Advanced"
+                    AllowGrouping="true" 
+                    AllowSorting="true" 
+                    PageSize="15" 
+                    AllowPaging="true" 
+                    PagerHorizontalAlign="HorizontalAlign.Left"
+                    Data="@Municipalalities" 
+                    TItem="Municipalality" 
+                    ColumnWidth="300px" 
+                    LogicalFilterOperator="LogicalFilterOperator.Or" 
+                    ShowPagingSummary="true"
+                    IsLoading=@_isLoading 
+                    Sort="@ShowLoading" 
+                    Page="@ShowLoading" 
+                    Group="@ShowLoading" 
+                    Filter="@ShowLoading">
+        <Columns>
+            <RadzenDataGridColumn TItem="Municipalality" Property="Code" Title="Code" Filterable="false" />
+            <RadzenDataGridColumn TItem="Municipalality" Property="Name" Title="Name" />
+            <RadzenDataGridColumn TItem="Municipalality" Property="AreaCode" Title="AreaCode" />
+            <RadzenDataGridColumn TItem="Municipalality" Property="Type" Title="Type" />
+            <RadzenDataGridColumn TItem="Municipalality" Property="Year" Title="Year" />
+        </Columns>
+    </RadzenDataGrid>
+</div>
