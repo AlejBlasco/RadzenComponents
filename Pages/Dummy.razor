@@ -1,6 +1,13 @@
 @page "/dummy"
 
 @using RadzenComponents.Components
+@using RadzenComponents.Services
+
+@inject HttpClient Http
+
+<div class="form-row mt-2">
+    <p>El servicio de Municipios contiene <b>@_totalMunicipalities</b> elementos.</p>
+</div>
 
 <div class="form-row mt-2">
     <IecsAutoComplete />
@@ -9,3 +16,16 @@
 <div class="form-row mt-2">
     <IecsDataGrid />
 </div>
+
+@code
+{
+    private int _totalMunicipalities = 0;
+
+    protected override async Task OnInitializedAsync()
+        {
+            await base.OnInitializedAsync();
+
+            _totalMunicipalities = await new MunicipalalityService()
+                .CountMunicipalalitiesAsync(Http);
+        }
+}

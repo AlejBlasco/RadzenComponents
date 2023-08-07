@@ -9,13 +9,24 @@ namespace RadzenComponents.Services
 {
     public class MunicipalalityService
     {
+        private readonly string _inputPath = "sample-data/georef-spain-municipio.json";
+
         public async Task<Municipalality[]> GetMunicipalalitiesAsync(HttpClient http)
         {
-            var response = await http.GetFromJsonAsync<Municipalality[]>("sample-data/georef-spain-municipio_2.json");
+            var response = await http.GetFromJsonAsync<Municipalality[]>(_inputPath);
             
             return response != null
                 ? response.OrderBy(m => m.Name).ToArray()
                 : Array.Empty<Municipalality>();
+        }
+
+        public async Task<int> CountMunicipalalitiesAsync(HttpClient http)
+        {
+            var response = await http.GetFromJsonAsync<Municipalality[]>(_inputPath);
+            
+            return response != null
+                ? response.Count()
+                : 0;
         }
     }
 
