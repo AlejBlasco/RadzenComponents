@@ -3,29 +3,45 @@
 @using RadzenComponents.Components
 @using RadzenComponents.Services
 
-@inject HttpClient Http
+@inject HttpClient http
 
-<div class="form-row mt-2">
-    <p>El servicio de Municipios contiene <b>@_totalMunicipalities</b> elementos.</p>
-</div>
+<h3>Prueba de componentes</h3>
 
-<div class="form-row mt-2">
-    <IecsAutoComplete />
-</div>
+@if (_isLoading)
+{
+    <div class="form-row mt-2">
+        <p>Cargando datos, espere.</p>
+    </div>    
+}
+else
+{
+    <div class="form-row mt-2">
+        <p>El servicio de Municipios contiene <b>@_totalMunicipalities</b> municipios de Aragón.</p>
+    </div>    
 
-<div class="form-row mt-2">
-    <IecsDataGrid />
-</div>
+    <div class="form-row mt-2">
+        <IecsAutoComplete Municipalalities="@(_municipalities.ToList())" />
+    </div>
+
+    <div class="form-row mt-2">
+        <IecsDataGrid Municipalalities="@_municipalities"/>
+    </div>
+}
 
 @code
 {
+    private bool _isLoading = true;
     private int _totalMunicipalities = 0;
+    private IQueryable<Municipalality>? _municipalities;
 
     protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
+    {
+        await base.OnInitializedAsync();
 
-            _totalMunicipalities = await new MunicipalalityService()
-                .CountMunicipalalitiesAsync(Http);
-        }
+        var service = new MunicipalalityService(http);
+        _municipalities = await service.GetMunicipalalitiesQueryAsync();       
+
+        _totalMunicipalities = _municipalities != null ? _municipalities.Count() : 0;
+        _isLoading = false;
+    }
 }

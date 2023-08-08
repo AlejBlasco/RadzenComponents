@@ -1,5 +1,5 @@
+using Microsoft.AspNetCore.Components;
 using RadzenComponents.Services;
-using System.Linq;
 
 namespace RadzenComponents.Components
 {
@@ -10,14 +10,12 @@ namespace RadzenComponents.Components
 
         public string Value {get;set;} = string.Empty;
         
+        [Parameter]
         public IEnumerable<Municipalality> Municipalalities {get;set;} = new List<Municipalality>();
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-
-            Municipalalities = await new MunicipalalityService()
-                .GetMunicipalalitiesAsync(Http);
         }
 
         void OnChange(dynamic args)

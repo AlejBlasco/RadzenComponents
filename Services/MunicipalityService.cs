@@ -1,32 +1,26 @@
-using System;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 
 namespace RadzenComponents.Services
 {
     public class MunicipalalityService
     {
-        private readonly string _inputPath = "sample-data/georef-spain-municipio.json";
+        private readonly HttpClient _http;
+        private readonly string _inputPath = "sample-data/georef-spain-municipio-aragon.json";
 
-        public async Task<Municipalality[]> GetMunicipalalitiesAsync(HttpClient http)
+        public MunicipalalityService(HttpClient http)
         {
-            var response = await http.GetFromJsonAsync<Municipalality[]>(_inputPath);
-            
-            return response != null
-                ? response.OrderBy(m => m.Name).ToArray()
-                : Array.Empty<Municipalality>();
+            _http = http 
+                ?? throw new ArgumentNullException(nameof(http));
         }
 
-        public async Task<int> CountMunicipalalitiesAsync(HttpClient http)
+        public async Task<IQueryable<Municipalality>> GetMunicipalalitiesQueryAsync()
         {
-            var response = await http.GetFromJsonAsync<Municipalality[]>(_inputPath);
-            
+            var response = await _http.GetFromJsonAsync<Municipalality[]>(_inputPath);
             return response != null
-                ? response.Count()
-                : 0;
+                ? response.OrderBy(m => m.Name).AsQueryable() 
+                : new List<Municipalality>().AsQueryable();
         }
     }
 
